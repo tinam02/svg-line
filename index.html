@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <svg
+        viewBox="0 0 342 1742"
+        fill="none"
+        preserveAspectRatio="xMidYMax meet"
+      >
+        <path
+          class="path"
+          d="M171.503 0V502.5L56.0033 532.5L208.003 568.5L4.50328 618L171.503 663.5V1441C191.503 1413 248.303 1373.8 315.503 1441C382.703 1508.2 289.17 1617.33 234.003 1663.5L171.503 1738M171.503 1738L105.003 1663.5L29.5033 1581C9.50328 1551.5 -18.4967 1480.5 29.5033 1432.5C77.5033 1384.5 128.837 1403.83 148.503 1419.5L170.003 1441L171.503 1500L234.003 1515.5L105.003 1544.5L214.003 1566.5L170.003 1581L171.503 1738Z"
+          stroke="#d41555"
+          stroke-width="6"
+        />
+      </svg>
+    </div>
+    <!-- custom attribute za parallax -->
+    <section class="one">
+      <h1 class="scroll" data-rate=".4" data-direction="vertical">Scrolling SVG Line</h1>
+    </section>
+
+    <section class="two">
+      <h1 class="scroll" data-rate=".2" data-direction="vertical">scroll !!</h1>
+      <p>watermark</p>
+    </section>
+
+    <script>
+      let path = document.querySelector(".path");
+      let pathLength = path.getTotalLength();
+
+      path.style.strokeDasharray = pathLength + " " + pathLength;
+      //   start off where u dont see it
+      path.style.strokeDashoffset = pathLength;
+
+      window.addEventListener("scroll", () => {
+        //   what % down is it
+        var scrollPercentage =
+          (document.documentElement.scrollTop + document.body.scrollTop) /
+          (document.documentElement.scrollHeight -
+            document.documentElement.clientHeight);
+        //   length to offset dashes;
+        var drawLength = pathLength * scrollPercentage;
+        //   reverse
+        path.style.strokeDashoffset = pathLength - drawLength;
+
+        //   parallax
+        // target in relation to items w scrooll class
+        const target = document.querySelectorAll(".scroll");
+
+        var i = 0, length = target.length;
+        for (i; i < length; i++) {
+          var pos = window.pageYOffset * target[i].dataset.rate;
+
+          if (target[i].dataset.direction === "vertical") {
+            target[i].style.transform = `translate3d(0px,${pos}px,0px)`;
+          } else {
+            var posX = window.pageYOffset * target[i].dataset.ratex;
+            var posY = window.pageYOffset * target[i].dataset.ratey;
+
+            target[i].style.transform = `translate3d(${posX}px, ${posY}px, 0px)`
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
